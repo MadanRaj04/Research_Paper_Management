@@ -1,0 +1,48 @@
+const express = require('express');
+const router = express.Router();
+
+// Example controller imports (assume these are implemented in controllers folder)
+const paperController = require('./controllers/paperController');
+const userController = require('./controllers/userController');
+const categoryController = require('./controllers/categoryController');
+const commentController = require('./controllers/commentController');
+const  {uploadFileToDropbox} = require('./controllers/fileController');
+
+// Paper Routes
+router.get('/papers', paperController.getAllPapers);
+router.get('/papers/:id', paperController.getPaperById);
+router.post('/papers', paperController.createPaper);
+router.put('/papers/:id', paperController.updatePaper);
+router.patch('/papers/:id', paperController.partialUpdatePaper);
+router.delete('/papers/:id', paperController.deletePaper);
+
+// Extended Paper Features
+router.get('/papers/search', paperController.searchPapers);
+router.get('/papers/category/:categoryName', paperController.getPapersByCategory);
+router.get('/papers/recent', paperController.getRecentPapers);
+router.get('/papers/popular', paperController.getPopularPapers);
+router.post('/papers/:id/download', paperController.downloadPaper);
+
+// Categories
+router.get('/categories', categoryController.getAllCategories);
+router.post('/categories', categoryController.createCategory);
+
+// Comments
+router.post('/papers/:id/comments', commentController.addComment);
+router.get('/papers/:id/comments', commentController.getCommentsForPaper);
+
+// User Authentication
+//router.post('/users/register', userController.registerUser);
+//router.post('/users/login', userController.loginUser);
+//router.get('/users/me', userController.getUserProfile);
+
+// routes/fileRoutes.js
+
+
+// POST route to upload file to Dropbox
+router.post('/upload', uploadFileToDropbox);
+
+module.exports = router;
+
+
+module.exports = router;

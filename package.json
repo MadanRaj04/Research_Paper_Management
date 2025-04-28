@@ -2,7 +2,6 @@
   "name": "research-paper-management",
   "private": true,
   "version": "0.0.0",
-  "type": "module",
   "scripts": {
     "dev": "vite",
     "build": "vite build",
@@ -10,8 +9,16 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "cors": "^2.8.5",
+    "dotenv": "^16.5.0",
+    "dropbox": "^10.34.0",
+    "express": "^5.1.0",
+    "isomorphic-fetch": "^3.0.0",
+    "mongoose": "^8.14.0",
+    "morgan": "^1.10.0",
     "react": "^19.0.0",
-    "react-dom": "^19.0.0"
+    "react-dom": "^19.0.0",
+    "react-router-dom": "^7.5.2"
   },
   "devDependencies": {
     "@eslint/js": "^9.22.0",
