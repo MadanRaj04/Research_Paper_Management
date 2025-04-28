@@ -1,36 +1,38 @@
 // controllers/fileController.js
 
-const { Dropbox } = require('dropbox');  // Dropbox SDK
-const fetch = require('isomorphic-fetch');  // For Dropbox API
+const { Dropbox } = require('dropbox');
+const fetch = require('isomorphic-fetch');
 
-// Dropbox Client Setup
+// Dropbox setup
 const dropboxClient = new Dropbox({
-  accessToken: process.env.DROPBOX_ACCESS_TOKEN,  // Use your Dropbox access token here
+  accessToken: process.env.DROPBOX_ACCESS_TOKEN,
   fetch
 });
 
-// Controller to handle file upload
 const uploadFileToDropbox = async (req, res) => {
   try {
-    const file = req.body;  // Assuming the file is base64 encoded or as a buffer
-    const fileName = 'uploaded_file.pdf';  // Give the file a name
-    // Upload the file to Dropbox
+    const file = req.file;
+
+    if (!file) {
+      return res.status(400).json({ message: 'No file uploaded.' });
+    }
+
+    const fileName = file.originalname;
+
     const uploadResponse = await dropboxClient.filesUpload({
-      path: `/uploads/${fileName}`,  // Dropbox path to save the file
-      contents: file
+      path: `/uploads/${fileName}`,
+      contents: file.buffer
     });
 
-    // Generate a shared link for the uploaded file
     const sharedLinkResponse = await dropboxClient.sharingCreateSharedLinkWithSettings({
       path: uploadResponse.result.path_display
     });
 
-    const fileUrl = sharedLinkResponse.result.url;  // Shared URL
+    const fileUrl = sharedLinkResponse.result.url;
 
-    // Send back the file URL in the response
     res.status(200).json({
       message: 'File uploaded successfully!',
-      fileUrl: fileUrl
+      fileUrl
     });
   } catch (error) {
     console.error('Error uploading to Dropbox:', error);

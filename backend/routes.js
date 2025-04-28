@@ -1,5 +1,8 @@
 const express = require('express');
 const router = express.Router();
+const multer = require('multer');
+const storage = multer.memoryStorage();
+const upload = multer({ storage: storage });
 
 // Example controller imports (assume these are implemented in controllers folder)
 const paperController = require('./controllers/paperController');
@@ -40,9 +43,9 @@ router.get('/papers/:id/comments', commentController.getCommentsForPaper);
 
 
 // POST route to upload file to Dropbox
-router.post('/upload', uploadFileToDropbox);
+
+router.post('/upload', upload.single('file'), uploadFileToDropbox);
 
 module.exports = router;
 
 
-module.exports = router;
