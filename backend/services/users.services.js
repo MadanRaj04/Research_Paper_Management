@@ -15,7 +15,7 @@ class UsersService{
         const id = obj._id;
         const existingUser = await UserModel.findById(id);
         if(!existingUser){
-            throw new Error("User Not Found")
+            throw new Error("User Not Found.")
         }
         existingUser.username = obj.username;
         existingUser.details = obj.details;
@@ -30,23 +30,23 @@ class UsersService{
     {
         const users = await UserModel.findByIdAndDelete(id);
         if(!users){
-            throw new Error("User Not Found")
+            throw new Error("User Not Found.")
         }
     }
     async getUserById(id) {
         const user = await UserModel.findById(id);
         if (!user) {
-            throw new Error("User Not Found");
+            throw new Error("User Not Found.");
         }
         return user;
     }
     async loginUser(email, password) {
         const user = await UserModel.findOne({ email });
         if (!user) {
-            throw new Error("User not found");
+            throw new Error("User not found.");
         }
         if (user.password !== password) {
-            throw new Error("Invalid password");
+            throw new Error("Invalid password.");
         }
         return user;  // Login successful, return user data
     }
