@@ -8,12 +8,12 @@ exports.registerUser = async (req, res) => {
         await usersService.registerUser(email, password); // Don't forget to await
         res.status(201).json({
             status: true,
-            message: "User Registered Successfully",
+            message: "User Registered Successfully.",
         });
     } catch (error) {
         res.json({
             status: false,
-            message: error.message || "Registration failed"
+            message: error.message || "Registration failed."
         });
     }
 };
@@ -24,12 +24,12 @@ exports.updateUser = async (req, res) => {
         await usersService.updateUser(payload); // Add await here too
         res.status(201).json({
             status: true,
-            message: "User updated successfully"
+            message: "User updated successfully."
         });
     } catch (err) {
         res.json({
             status: false,
-            message: err.message || "Update failed"
+            message: err.message || "Update failed."
         });
     }
 };
@@ -45,7 +45,7 @@ exports.getUserById = async (req, res) => {
     } catch (err) {
         res.status(404).json({
             status: false,
-            message: err.message || "User not found"
+            message: err.message || "User not found."
         });
     }
 };
@@ -55,13 +55,13 @@ exports.loginUser = async (req, res) => {
         const user = await usersService.loginUser(email, password); // Call the service method
         res.status(200).json({
             status: true,
-            message: "Login successful",
+            message: "Login successful.",
             data: user
         });
     } catch (err) {
         res.status(401).json({
             status: false,
-            message: err.message || "Login failed"
+            message: err.message || "Login failed."
         });
     }
 };
