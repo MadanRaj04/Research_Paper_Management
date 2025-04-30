@@ -33,6 +33,13 @@ class UsersService{
             throw new Error("User Not Found")
         }
     }
+    async getUserById(id) {
+        const user = await UserModel.findById(id);
+        if (!user) {
+            throw new Error("User Not Found");
+        }
+        return user;
+    }
 }
 
 module.exports = new UsersService();
