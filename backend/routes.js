@@ -38,6 +38,8 @@ router.get('/papers/:id/comments', commentController.getCommentsForPaper);
 // User Authentication
 router.post('/users/register', userController.registerUser);
 router.put('/users/updateUser',userController.updateUser);
+router.get('/users/getUserById',userController.getUserById);
+
 //router.post('/users/login', userController.loginUser);
 //router.get('/users/me', userController.getUserProfile);
 
