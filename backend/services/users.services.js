@@ -40,6 +40,17 @@ class UsersService{
         }
         return user;
     }
+    async loginUser(email, password) {
+        const user = await UserModel.findOne({ email });
+        if (!user) {
+            throw new Error("User not found");
+        }
+        if (user.password !== password) {
+            throw new Error("Invalid password");
+        }
+        return user;  // Login successful, return user data
+    }
+    
 }
 
 module.exports = new UsersService();

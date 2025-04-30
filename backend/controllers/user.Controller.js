@@ -49,3 +49,19 @@ exports.getUserById = async (req, res) => {
         });
     }
 };
+exports.loginUser = async (req, res) => {
+    try {
+        const { email, password } = req.body;
+        const user = await usersService.loginUser(email, password); // Call the service method
+        res.status(200).json({
+            status: true,
+            message: "Login successful",
+            data: user
+        });
+    } catch (err) {
+        res.status(401).json({
+            status: false,
+            message: err.message || "Login failed"
+        });
+    }
+};
