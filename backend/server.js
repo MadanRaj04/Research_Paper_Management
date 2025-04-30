@@ -16,13 +16,14 @@ const routes = require('./routes');  // Import routes from routes.js
 app.use(express.json());
 app.use(cors());
 app.use(morgan('dev'));
-
+app.use(express.static("public"));
+app.set('view engine','ejs');
+app.set('views', './views');
 // Route Registration
 app.use('/api', routes);  // Use the /api/files path for file routes
-
 // Root route
 app.get('/', (req, res) => {
-  res.send('📚 Research Paper Repository API is running.');
+  res.render('index'); // index.ejs in views folder
 });
 
 // MongoDB Connection
