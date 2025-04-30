@@ -1,9 +1,8 @@
-const Paper = require('../models/paper'); // Assuming you have a Mongoose model for Paper
-
+const PaperModel = require('../models/paper.model');
 // GET /papers - Fetch all papers
 exports.getAllPapers = async (req, res) => {
   try {
-    const papers = await Paper.find();
+    const papers = await PaperModel.find();
     res.json(papers);
   } catch (error) {
     res.status(500).json({ message: 'Error fetching papers', error });

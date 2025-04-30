@@ -1,6 +1,7 @@
-const Comment = require('../models/comment');
-const Paper = require('../models/paper');
-
+//const Comment = require('../models/comment');
+//const Paper = require('../models/paper');
+const CommentModel = require('../models/comment.model');
+const PaperModel = require('../models/paper.model');
 // POST /papers/:id/comments - Add a comment to a paper
 exports.addComment = async (req, res) => {
   try {
@@ -8,10 +9,10 @@ exports.addComment = async (req, res) => {
     const paperId = req.params.id;
 
     // Optional: check if the paper exists
-    const paper = await Paper.findById(paperId);
+    const paper = await PaperModel.findById(paperId);
     if (!paper) return res.status(404).json({ message: 'Paper not found' });
 
-    const newComment = new Comment({ paper: paperId, user, comment });
+    const newComment = new CommentModel({ paper: paperId, user, comment });
     const savedComment = await newComment.save();
 
     res.status(201).json(savedComment);

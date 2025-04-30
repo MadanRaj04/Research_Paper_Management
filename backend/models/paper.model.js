@@ -11,4 +11,5 @@ const paperSchema = new mongoose.Schema({
   downloadCount: { type: Number, default: 0 }
 }, { timestamps: true });
 
-module.exports = mongoose.model('Paper', paperSchema);
+const PaperModel = mongoose.model('Paper', paperSchema);
+module.exports = PaperModel

@@ -1,10 +1,8 @@
-const Category = require('../models/category');
-const Paper = require('../models/paper');
-
+const CategoryModel = require('../models/category.model');
 // GET /categories - Fetch all categories with optional paper details
 exports.getAllCategories = async (req, res) => {
   try {
-    const categories = await Category.find().populate('papers', 'title authors');
+    const categories = await CategoryModel.find().populate('papers', 'title authors');
     res.json(categories);
   } catch (error) {
     res.status(500).json({ message: 'Error fetching categories', error });

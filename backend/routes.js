@@ -4,15 +4,16 @@ const multer = require('multer');
 const storage = multer.memoryStorage();
 const upload = multer({ storage: storage });
 
+
 // Example controller imports (assume these are implemented in controllers folder)
-const paperController = require('./controllers/paperController');
-const userController = require('./controllers/userController');
-const categoryController = require('./controllers/categoryController');
-const commentController = require('./controllers/commentController');
-const  {uploadFileToDropbox} = require('./controllers/fileController');
+const paperController = require('./controllers/paper.Controller');
+const userController = require('./controllers/user.Controller');
+const categoryController = require('./controllers/category.Controller');
+const commentController = require('./controllers/comment.Controller');
+const  {uploadFileToDropbox} = require('./controllers/file.Controller');
 
 // Paper Routes
-router.get('/papers', paperController.getAllPapers);
+router.get('/papers', paperController.getPapersByCategory);
 router.get('/papers/:id', paperController.getPaperById);
 router.post('/papers', paperController.createPaper);
 router.put('/papers/:id', paperController.updatePaper);
