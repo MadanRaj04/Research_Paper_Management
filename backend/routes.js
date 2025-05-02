@@ -39,9 +39,9 @@ router.get('/papers/:id/comments', commentController.getCommentsForPaper);
 router.post('/users/register', userController.registerUser);
 router.post('/users/login', userController.loginUser);
 router.put('/users/updateUser', auth, userController.updateUser);
-router.put('/users/updateUser',userController.updateUser);
-router.get('/users/getUserById',userController.getUserById);
-router.post('/users/login', userController.loginUser);
+//router.put('/users/updateUser',userController.updateUser);
+//router.get('/users/getUserById',userController.getUserById);
+//router.post('/users/login', userController.loginUser);
 //router.get('/users/me', userController.getUserProfile);
 
 // Dropbox Upload (admin only)
