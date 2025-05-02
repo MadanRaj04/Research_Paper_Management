@@ -1,11 +1,15 @@
 const UserModel = require("../models/user.model");
-
+const bcrypt = require("bcryptjs");
+const jwt = require("jsonwebtoken");
 class UsersService{
-    async registerUser(email,password)
-    {
+    async registerUser(email, password, username, role = 'user', details = {}) {
+        const hashedPassword = await bcrypt.hash(password, 10);
         const obj = {
             email,
-            password
+            password: hashedPassword,
+            username,
+            role,
+            details
         };
         await UserModel.create(obj);
     }
@@ -33,6 +37,26 @@ class UsersService{
             throw new Error("User Not Found")
         }
     }
+    async getUserByEmail(email) {
+        return await UserModel.findOne({ email });
+    }
+    async loginUser(email, password) {
+        const user = await UserModel.findOne({ email });
+        if (!user) throw new Error("User not found");
+
+        const isMatch = await bcrypt.compare(password, user.password);
+        if (!isMatch) throw new Error("Invalid credentials");
+
+        const token = jwt.sign(
+            { userId: user._id, email: user.email, role: user.role },
+            process.env.JWT_SECRET,
+            { expiresIn: '1h' }
+        );
+        
+
+        return { token, user };
+    }
+    
 }
 
 module.exports = new UsersService();

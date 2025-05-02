@@ -3,51 +3,44 @@ const router = express.Router();
 const multer = require('multer');
 const storage = multer.memoryStorage();
 const upload = multer({ storage: storage });
+const auth = require('./middlewares/auth');
+const role = require('./middlewares/role');
 
-
-// Example controller imports (assume these are implemented in controllers folder)
 const paperController = require('./controllers/paper.Controller');
 const userController = require('./controllers/user.Controller');
 const categoryController = require('./controllers/category.Controller');
 const commentController = require('./controllers/comment.Controller');
-const  {uploadFileToDropbox} = require('./controllers/file.Controller');
+const { uploadFileToDropbox } = require('./controllers/file.Controller');
 
-// Paper Routes
+// Paper Routes (authenticated users can create/update, only admins can delete)
 router.get('/papers', paperController.getPapersByCategory);
 router.get('/papers/:id', paperController.getPaperById);
-router.post('/papers', paperController.createPaper);
-router.put('/papers/:id', paperController.updatePaper);
-router.patch('/papers/:id', paperController.partialUpdatePaper);
-router.delete('/papers/:id', paperController.deletePaper);
+router.post('/papers', auth, role(['admin', 'editor']), paperController.createPaper);
+router.put('/papers/:id', auth, role(['admin', 'editor']), paperController.updatePaper);
+router.patch('/papers/:id', auth, role(['admin', 'editor']), paperController.partialUpdatePaper);
+router.delete('/papers/:id', auth, role('admin'), paperController.deletePaper);
 
-// Extended Paper Features
+// Search and Filters
 router.get('/papers/search', paperController.searchPapers);
 router.get('/papers/category/:categoryName', paperController.getPapersByCategory);
 router.get('/papers/recent', paperController.getRecentPapers);
 router.get('/papers/popular', paperController.getPopularPapers);
-router.post('/papers/:id/download', paperController.downloadPaper);
+router.post('/papers/:id/download', auth, paperController.downloadPaper);
 
-// Categories
+// Categories (only admin can create)
 router.get('/categories', categoryController.getAllCategories);
-router.post('/categories', categoryController.createCategory);
+router.post('/categories', auth, role('admin'), categoryController.createCategory);
 
-// Comments
-router.post('/papers/:id/comments', commentController.addComment);
+// Comments (any authenticated user)
+router.post('/papers/:id/comments', auth, role(['user', 'editor', 'admin']), commentController.addComment);
 router.get('/papers/:id/comments', commentController.getCommentsForPaper);
 
-// User Authentication
+// User Auth Routes
 router.post('/users/register', userController.registerUser);
-router.put('/users/updateUser',userController.updateUser);
-//router.post('/users/login', userController.loginUser);
-//router.get('/users/me', userController.getUserProfile);
+router.post('/users/login', userController.loginUser);
+router.put('/users/updateUser', auth, userController.updateUser);
 
-// routes/fileRoutes.js
-
-
-// POST route to upload file to Dropbox
-
-router.post('/upload', upload.single('file'), uploadFileToDropbox);
+// Dropbox Upload (admin only)
+router.post('/upload', auth, role('admin'), upload.single('file'), uploadFileToDropbox);
 
 module.exports = router;
-
-
